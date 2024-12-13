@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Restaurante Delfín Azul</title>
+    
+    <!-- Agregar Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+
+    <style>
+        /* Estilo global del cuerpo */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            padding: 0 15px;
+            text-align: center;
+        }
+
+        /* Fondo semitransparente para cerrar el menú al hacer clic fuera de él */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Menú hamburguesa */
+        .menu-icon {
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .menu-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Navegación */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #007BFF;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            background-color: #007BFF;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: #007BFF;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .nav-links a:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .nav-links.show {
+            display: flex;
+        }
+    </style>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.querySelector(".nav-links");
+            var overlay = document.querySelector(".overlay");
+            menu.classList.toggle("show");
+            overlay.classList.toggle("active");
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Fondo semitransparente para cerrar el menú al hacer clic fuera de él -->
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <!-- Ícono de menú hamburguesa para móviles -->
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+
+    <!-- Navegación -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/menu">Menú</a></li>
+            <li><a href="/nosotros">Sobre Nosotros</a></li>
+            <li><a href="/login">Iniciar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mapa de ubicación -->
+    <div class="container my-4">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.8081816927242!2d-78.50137810000001!3d-0.1291669!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d585fb399a2f2d%3A0xdd53a3d2bd4f9289!2sDelfin%20Azul%20San%20Carlos!5e0!3m2!1ses!2sec!4v1733186186508!5m2!1ses!2sec" 
+            width="75%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
+        </iframe>
+    </div>
+
+    <!-- Información de contacto -->
+    <main class="container text-center mt-5">
+        <h2 class="text-primary">Información de Contacto</h2>
+        <p>Teléfono: <strong>097-908-5751</strong></p>
+        <p>Dirección: <strong>Av. Vaca de Castro y Av. Pedro de Alvarado</strong></p>
+        <p>Email: <strong>mabe_patico@hotmail.com</strong></p>
+        <p>Horario: <strong>Lunes a Domingo, 8:00 AM - 17:00 PM</strong></p>
+    </main>
+
+    <!-- Agregar Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybF5mTz8DkMZ5xw6T5i2p8e9UpuX0OM8T0k0G6mH8Odp9rSeZ8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyc5t5t8FPDfg45T1xWKhf1BbU6pbZZGbbF9SZZFml2dAZIs6DlbaJf" crossorigin="anonymous"></script>
+</body>
+</html>

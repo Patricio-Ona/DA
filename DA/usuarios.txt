@@ -1,0 +1,135 @@
+
+----------------------------
+Usuario: Pato
+Correo: pnona@puce.edu.ec
+Contraseña: 12345
+Nombre Completo: Patricio Nicolás Oña Ledesma
+Dirección: Quito
+Teléfono: 0979085751
+Fecha de Nacimiento: 2004-04-21
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+
+----------------------------
+Usuario: Mario
+Correo: p@gmail.com
+Contraseña: 123456
+Nombre Completo: MARIO PATRICIO ONA DAVILA
+Dirección: Quito
+Teléfono: 0988252459
+Fecha de Nacimiento: 1980-07-14
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+
+----------------------------
+Usuario: P
+Correo: nico-gabu83@hotmail.com
+Contraseña: 1234556
+Nombre Completo: Patricio Nicolás Oña Ledesma
+Dirección: Quito
+Teléfono: 0979085751
+Fecha de Nacimiento: 2003-09-20
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Samuel
+Correo: s@gmail.com
+Contraseña: s@mu123
+Nombre Completo: Samuel García
+Dirección: CALDERÓN
+Teléfono: 0979632564
+Fecha de Nacimiento: No especificada
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Samu
+Correo: s@gmail.com
+Contraseña: 123
+Nombre Completo: Samuel García
+Dirección: CALDERÓN
+Teléfono: 0979632564
+Fecha de Nacimiento: 2006-01-15
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Belen
+Correo: mabe_patico@hotmail.com
+Contraseña: 123
+Nombre Completo: Belén Ledesma
+Dirección: SAN CARLOS
+Teléfono: 0984411614
+Fecha de Nacimiento: 1983-01-31
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Samael
+Correo: a@puce.edu.ec
+Contraseña: 12345
+Nombre Completo: asas
+Dirección: asasa
+Teléfono: 0936142578
+Fecha de Nacimiento: No especificada
+Ciudad: QUito
+País: Ecuador
+Código Postal: 171907
+----------------------------
+----------------------------
+Usuario: Nico
+Correo: dsdas@gmail.com
+Contraseña: 123
+Nombre Completo: Nicolas
+Dirección: Condado
+Teléfono: 0979085751
+Fecha de Nacimiento: 2004-04-21
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Nico
+Correo: n@gmail.com
+Contraseña: 1234
+Nombre Completo: Nicolas
+Dirección: Quito
+Teléfono: 0988252459
+Fecha de Nacimiento: No especificada
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Pato
+Correo: pnona@puce.edu.ec
+Contraseña: 1230
+Nombre Completo: Patricio Nicolás Oña Ledesma
+Dirección: Quito
+Teléfono: 0979085751
+Fecha de Nacimiento: 2006-01-22
+Ciudad: Quito
+País: Ecuador
+Código Postal: 170150
+----------------------------
+----------------------------
+Usuario: Pablo
+Correo: p@gmail.com
+Contraseña: 123
+Nombre Completo: Pablo Gomeza
+Dirección: Condado
+Teléfono: 0979085751
+Fecha de Nacimiento: 2004-04-21
+Ciudad: Quito
+País: Ecuador
+Código Postal: 171098
+----------------------------

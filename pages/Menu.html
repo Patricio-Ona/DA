@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - Restaurante Delfín Azul</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+    <style>
+    /* Estilos básicos */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f8ff;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h1 {
+        color: #007BFF;
+        margin-top: 20px;
+        font-size: 3em;
+    }
+
+    p.subtitle {
+        font-size: 1.5em;
+        color: #666;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    /* Estilos de cada plato */
+    .menu-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 1200px;
+        padding: 20px;
+    }
+
+    .menu-item {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin: 15px;
+        width: 300px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .menu-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .menu-item img {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+
+    /* Estilos del modal */
+    #modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #modal-content {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        width: 80%;
+        max-width: 500px;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Título del modal */
+    #modal-title {
+        font-size: 1.8em;
+        color: #007BFF;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    /* Imagen principal en el modal */
+    #main-img {
+        width: 100%; /* Ajuste del tamaño de la imagen principal */
+        height: auto;
+        max-height: 300px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    /* Contenedor de miniaturas */
+    .modal-img-container {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    /* Miniaturas */
+    .modal-img {
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .modal-img:hover {
+        transform: scale(1.1);
+    }
+
+    .modal-img.active {
+        border-color: #007BFF;
+    }
+
+    /* Descripción */
+    .descripcion {
+        font-size: 1em;
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    /* Contenedor de cantidad y botón de compra */
+    .cantidad {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    /* Botón de compra */
+    .comprar-btn {
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .comprar-btn:hover {
+        background-color: #007BFF;
+    }
+
+    /* Estilo de la "X" de cierre */
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        color: #666;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+        color: #333;
+    }
+    /* Botones de Añadir al carrito y Realizar compra */
+.btn-success {
+    background-color: #007BFF; /* Azul igual al de la palabra "Menú" */
+    border-color: #007BFF;
+    color: white; /* Color de texto blanco */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+}
+
+.btn-success:hover {
+    background-color: #0056b3; /* Azul más oscuro cuando pasa el mouse sobre el botón */
+    border-color: #0056b3;
+}
+
+
+    /* Media Queries para adaptabilidad */
+    @media (max-width: 768px) {
+        /* Ajuste del título y subtítulo en pantallas pequeñas */
+        h1 {
+            font-size: 2em;
+        }
+
+        p.subtitle {
+            font-size: 1.2em;
+            padding: 0 10px;
+        }
+
+        /* Ajuste del ancho de los elementos del menú */
+        .menu-item {
+            width: 100%;
+            max-width: 90%;
+            margin: 10px;
+        }
+
+        /* Ajuste del contenido del modal en pantallas pequeñas */
+        #modal-content {
+            width: 90%;
+            padding: 15px;
+        }
+
+        /* Ajuste del tamaño de la imagen principal y miniaturas en el modal */
+        #main-img {
+            max-height: 200px;
+        }
+
+        .modal-img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        /* Ajuste del título y subtítulo en pantallas muy pequeñas */
+        h1 {
+            font-size: 1.8em;
+        }
+
+        p.subtitle {
+            font-size: 1em;
+        }
+
+        /* Reducción del tamaño de la "X" de cierre en el modal */
+        .close-btn {
+            font-size: 18px;
+        }
+
+        /* Ajuste del contenido del modal en pantallas muy pequeñas */
+        #modal-content {
+            width: 95%;
+            padding: 10px;
+        }
+
+        /* Ajuste del tamaño de la imagen principal y miniaturas en el modal */
+        #main-img {
+            max-height: 180px;
+        }
+
+        .modal-img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+     /* Barra de navegación para computadoras */
+     nav {
+            display: flex;
+            justify-content: center;
+            background-color: #007BFF;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 5px 10px;
+    transition: color 0.3s ease; /* Añade una transición para suavizar el cambio */
+}
+
+
+        .nav-links a:hover {
+    color: lightblue; /* Cambia a un tono más claro al pasar el cursor */
+    text-decoration: none; /* Asegura que no haya subrayado */
+    transition: color 0.3s ease; /* Transición suave */
+}
+
+        /* Menú hamburguesa para teléfonos */
+        .menu-icon {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .menu-icon.active {
+            display: block;
+        }
+
+        .nav-links-mobile {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            background-color: #007BFF;
+            width: 200px;
+            padding: 10px 0;
+            z-index: 999;
+        }
+
+        .nav-links-mobile a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .nav-links-mobile a:hover {
+            background-color: #333;
+        }
+        
+        .cart-icon {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1001; /* Asegura que esté por encima de otros elementos */
+}
+
+.cart-icon img {
+    filter: invert(100%);
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: filter 0.3s ease; /* Transición suave para hover */
+}
+
+.cart-icon img:hover {
+    filter: invert(100%) brightness(120%); /* Más brillo al pasar el cursor */
+}
+
+
+        /* Menú para pantallas pequeñas */
+        @media (max-width: 768px) {
+            nav {
+                background-color: #007BFF;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .menu-icon {
+                display: block;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+            }
+
+            .nav-links-mobile {
+                display: none;
+            }
+        }
+
+        /* Ajuste del contenido principal */
+        h1 {
+            color: #007BFF;
+            margin-top: 70px;
+            font-size: 3em;
+        }
+
+        p.subtitle {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .menu-item {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 15px;
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+</style>
+
+</head>
+<body>
+
+    <nav>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/nosotros">Nosotros</a></li>
+            <li><a href="/contacto">Contacto</a></li>
+            <li><a href="/login">Iniciar Sesión</a></li>
+        </ul>
+        <ul class="nav-links-mobile" id="mobileMenu">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/nosotros">Nosotros</a></li>
+            <li><a href="/contacto">Contacto</a></li>
+            <li><a href="/login">Iniciar Sesión</a></li>
+        </ul>
+
+        <div class="cart-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito" onclick="abrirCarrito()">
+        </div>
+        
+    </nav>
+
+    <h1>Menú</h1>
+    <p class="subtitle">Descubre nuestros deliciosos platos frescos y llenos de sabor</p>
+
+    <div class="menu-container">
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Encebollado.jpeg" alt="Encebollado" onclick="abrirModal('Encebollado', 'Delicioso encebollado de pescado con yuca, cebolla, limón con caguil o chifle.', ['https://patricioona.neocities.org/DA/images/Encebollado.jpeg', 'https://patricioona.neocities.org/DA/images/Encebollado2.jpeg', 'https://patricioona.neocities.org/DA/images/encebollado1.jpeg'], 3.50)">
+        <h3>Encebollado</h3>
+        <p class="descripcion-breve">Pescado con yuca y cebolla, acompañado de limón.</p>
+        <p class="precio">$3.50</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Filete%20de%20pescado.jpeg" alt="Filete Apanado" onclick="abrirModal('Filete Apanado', 'Filete de pescado empanizado y frito al punto, con limón y salsa.', ['https://patricioona.neocities.org/DA/images/Filete%20de%20pescado.jpeg', 'https://patricioona.neocities.org/DA/images/Filete%20de%20pescado.jpeg', 'https://patricioona.neocities.org/DA/images/Filete%20de%20pescado.jpeg'], 8.50)">
+        <h3>Filete Apanado</h3>
+        <p class="descripcion-breve">Filete empanizado y frito, servido con limón.</p>
+        <p class="precio">$8.50</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Arroz%20marinero.jpeg" alt="Arroz Marinero" onclick="abrirModal('Arroz Marinero', 'Arroz con una mezcla de mariscos frescos y especias.', ['https://patricioona.neocities.org/DA/images/Arroz%20marinero.jpeg', 'https://patricioona.neocities.org/DA/images/Arroz%20marinero.jpeg', 'https://patricioona.neocities.org/DA/images/Arroz%20marinero.jpeg'], 25.00)">
+        <h3>Arroz Marinero</h3>
+        <p class="descripcion-breve">Arroz con mariscos frescos y especias.</p>
+        <p class="precio">$25.00</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Sopa%20de%20cangrejos.jpeg" alt="Sopa de Cangrejo" onclick="abrirModal('Sopa de Cangrejo', 'Reconfortante sopa de cangrejo con yuca y especias.', ['https://patricioona.neocities.org/DA/images/Sopa%20de%20cangrejos.jpeg', 'https://patricioona.neocities.org/DA/images/Sopa%20de%20cangrejos.jpeg', 'https://patricioona.neocities.org/DA/images/Sopa%20de%20cangrejos.jpeg'], 12.00)">
+        <h3>Sopa de Cangrejo</h3>
+        <p class="descripcion-breve">Sopa de cangrejo con yuca y especias.</p>
+        <p class="precio">$12.00</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Ceviche%20de%20camaron.jpg" alt="Ceviche de Camarón" onclick="abrirModal('Ceviche de Camarón', 'Ceviche fresco de camarones, cebolla, tomate y limón.', ['https://patricioona.neocities.org/DA/images/Ceviche%20de%20camaron.jpg', 'https://patricioona.neocities.org/DA/images/Ceviche%20de%20camaron.jpg', 'https://patricioona.neocities.org/DA/images/Ceviche%20de%20camaron.jpg'], 8.50)">
+        <h3>Ceviche de Camarón</h3>
+        <p class="descripcion-breve">Ceviche fresco de camarones, cebolla y limón.</p>
+        <p class="precio">$8.50</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Jugos.jpeg" alt="Batidos" onclick="abrirModal('Batidos', 'Refrescante batidos con fruta natural.', ['https://patricioona.neocities.org/DA/images/Jugos.jpeg', 'https://patricioona.neocities.org/DA/images/Batido%20de%20coco.jpeg', 'https://patricioona.neocities.org/DA/images/Jugos.jpeg'], 2.50)">
+        <h3>Batidos</h3>
+        <p class="descripcion-breve">Batidos de fruta natural refrescante.</p>
+        <p class="precio">$2.50</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Bandeja%20Marinera.jpg" alt="Bandeja Marinera" onclick="abrirModal('Bandeja Marinera', 'Una deliciosa combinación de mariscos frescos.', ['https://patricioona.neocities.org/DA/images/Bandeja%20Marinera.jpg', 'https://patricioona.neocities.org/DA/images/Bandeja%20Marinera.jpg', 'https://patricioona.neocities.org/DA/images/Bandeja%20Marinera.jpg'], 50.00)">
+        <h3>Bandeja Marinera</h3>
+        <p class="descripcion-breve">Combinación de mariscos frescos.</p>
+        <p class="precio">$50.00</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Camotillo%20encocado.jpg" alt="Camotillo Encocado" onclick="abrirModal('Camotillo Encocado', 'Camotillo cocinado en una rica y cremosa salsa de coco.', ['https://patricioona.neocities.org/DA/images/Camotillo%20encocado.jpg', 'https://patricioona.neocities.org/DA/images/Camotillo%20encocado.jpg', 'https://patricioona.neocities.org/DA/images/Camotillo%20encocado.jpg'], 15.00)">
+        <h3>Camotillo Encocado</h3>
+        <p class="descripcion-breve">Camotillo en una cremosa salsa de coco.</p>
+        <p class="precio">$15.00</p>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://patricioona.neocities.org/DA/images/Conchas%20asadas.jpg" alt="Conchas Asadas" onclick="abrirModal('Conchas Asadas', 'Conchas frescas asadas al punto, servidas con limón y una pizca de sal.', ['https://patricioona.neocities.org/DA/images/Conchas%20asadas.jpg', 'https://patricioona.neocities.org/DA/images/Conchas%20asadas.jpg', 'https://patricioona.neocities.org/DA/images/Conchas%20asadas.jpg'], 10.00)">
+        <h3>Conchas Asadas</h3>
+        <p class="descripcion-breve">Conchas frescas con limón y sal.</p>
+        <p class="precio">$10.00</p>
+    </div>
+</div>
+
+
+    <!-- Modal para mostrar las imágenes del plato -->
+<div id="modal" style="display: none;">
+    <div id="modal-content">
+        <button class="close-btn" onclick="cerrarModal()">×</button>
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+        <p id="modal-price" class="fw-bold text-primary"></p> <!-- Precio aquí -->
+        <img id="main-img" src="" alt="Imagen del plato" class="img-fluid mb-3">
+        <div id="modal-img-container" class="d-flex justify-content-center gap-2 mb-3"></div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Cantidad</span>
+            <input type="number" id="cantidad" class="form-control" min="1" value="1">
+        </div>
+        <button class="btn btn-success" onclick="comprarProducto()">Añadir al carrito</button>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="main-img" class="img-fluid mb-3" src="" alt="">
+                    <p id="modal-desc" class="descripcion"></p>
+                    <div class="d-flex justify-content-center gap-2 mb-3" id="modal-img-container"></div>
+                    <div id="batido-sabor" class="mb-3 d-none">
+                        <label for="sabor">Elige tu sabor:</label>
+                        <select id="sabor" class="form-select">
+                            <option value="mora">Mora</option>
+                            <option value="coco">Coco</option>
+                            <option value="platano">Guanabana</option>
+                            <option value="frutilla">Frutilla</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Cantidad</span>
+                        <input type="number" id="cantidad" class="form-control" min="1" value="1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="comprarProducto()">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<div id="cart-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 10px; padding: 20px; width: 90%; max-width: 500px;">
+            <h3>Carrito de Compras</h3>
+            <button onclick="cerrarCarrito()" style="background: transparent; border: none; font-size: 1.5em; position: absolute; top: 10px; right: 20px;">&times;</button>
+            <ul id="cart-items" class="list-group mb-3"></ul>
+            <p><strong>Subtotal:</strong> <span id="subtotal">$0.00</span></p>
+            <p><strong>IVA (15%):</strong> <span id="iva">$0.00</span></p>
+            <p><strong>Total:</strong> <span id="total">$0.00</span></p>
+            <button class="btn btn-success w-100" onclick="checkout()">Realizar Compra</button>
+        </div>
+    </div>
+  <div id="cart-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center;" onclick="cerrarCarrito(event)">
+    <!-- Contenedor del contenido del carrito -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 90%; max-width: 500px; position: relative;" onclick="event.stopPropagation()">
+        <!-- Botón de cierre "X" -->
+        <button onclick="cerrarCarrito()" style="background: transparent; border: none; font-size: 1.5em; position: absolute; top: 10px; right: 20px;">&times;</button>
+        <h3>Carrito de Compras</h3>
+        <ul id="cart-items" class="list-group mb-3"></ul>
+        <p><strong>Subtotal:</strong> <span id="subtotal">$0.00</span></p>
+        <p><strong>IVA (15%):</strong> <span id="iva">$0.00</span></p>
+        <p><strong>Total:</strong> <span id="total">$0.00</span></p>
+        <button class="btn btn-success w-100" onclick="checkout()">Realizar Compra</button>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+    <span id="user-name" style="font-size: 1.2em; font-weight: bold;">Bienvenido, Usuario</span>
+    <button id="logout-btn" style="background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Cerrar sesión</button>
+</div>
+
+<script>
+    let platoActual = '';
+    let descripcionActual = '';
+    let imagenesActuales = [];
+    let precioActual = 0;
+
+    function abrirModal(nombrePlato, descripcion, imagenes, precio, mostrarSabor = false) { 
+        platoActual = nombrePlato;
+        descripcionActual = descripcion;
+        imagenesActuales = imagenes;
+        precioActual = precio;
+
+        document.getElementById("modal").style.display = "flex";
+        document.getElementById("modal-title").textContent = platoActual;
+        document.getElementById("modal-desc").textContent = descripcionActual;
+        document.getElementById("modal-price").textContent = `Precio: $${precioActual.toFixed(2)}`;
+        document.getElementById("main-img").src = imagenes[0];
+        document.getElementById("cantidad").value = 1;
+
+        const contenedorMiniaturas = document.getElementById("modal-img-container");
+        contenedorMiniaturas.innerHTML = '';
+        imagenes.forEach((imgSrc, index) => {
+            const img = document.createElement("img");
+            img.src = imgSrc;
+            img.className = "modal-img" + (index === 0 ? " active" : "");
+            img.onclick = function () {
+                seleccionarImagenPrincipal(imgSrc);
+            };
+            contenedorMiniaturas.appendChild(img);
+        });
+    }
+
+    function seleccionarImagenPrincipal(src) {
+        document.getElementById("main-img").src = src;
+
+        const miniaturas = document.querySelectorAll(".modal-img");
+        miniaturas.forEach((img) => img.classList.remove("active"));
+        document.querySelector(`.modal-img[src="${src}"]`).classList.add("active");
+    }
+
+    function cerrarModal() {
+        document.getElementById("cantidad").value = 1;
+        document.getElementById("modal").style.display = "none";
+    }
+
+    function comprarProducto() {
+        const cantidad = parseInt(document.getElementById("cantidad").value, 10);
+        if (isNaN(cantidad) || cantidad <= 0) {
+            alert("Por favor, selecciona una cantidad válida.");
+            return;
+        }
+
+        addToCart(platoActual, precioActual, cantidad);
+        alert(`Se han añadido ${cantidad} unidad(es) de "${platoActual}" al carrito.`);
+        cerrarModal();
+    }
+
+    const cart = [];
+    const IVA_RATE = 0.15;
+
+    function addToCart(itemName, itemPrice, quantity) {
+        const existingItem = cart.find(item => item.name === itemName);
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({ name: itemName, price: itemPrice, quantity: quantity });
+        }
+        updateCart();
+    }
+
+    function abrirCarrito() {
+    fetch('http://172.16.0.139:3002/auth-status')
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {
+                updateCart();
+                document.getElementById("cart-modal").style.display = "flex";
+            } else {
+                alert("Por favor, inicie sesión para acceder al carrito.");
+                window.location.href = "/login";
+            }
+        })
+        .catch(error => {
+            console.error("Error al verificar autenticación:", error);
+            // Siempre abre el carrito si hay un error de autenticación
+            document.getElementById("cart-modal").style.display = "flex";
+        });
+}
+
+
+    function cerrarCarrito() {
+        document.getElementById("cart-modal").style.display = "none";
+    }
+
+    function updateCart() {
+    const cartItems = document.getElementById("cart-items");
+    cartItems.innerHTML = "";
+
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+            ${item.name} (x${item.quantity})
+            <span>$${itemTotal.toFixed(2)}</span>
+            <button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito(${index})">Eliminar</button>
+        `;
+        cartItems.appendChild(li);
+    });
+
+    const iva = subtotal * IVA_RATE;
+    const total = subtotal + iva;
+
+    document.getElementById("subtotal").innerText = `$${subtotal.toFixed(2)}`;
+    document.getElementById("iva").innerText = `$${iva.toFixed(2)}`;
+    document.getElementById("total").innerText = `$${total.toFixed(2)}`;
+}
+
+    function eliminarDelCarrito(index) {
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Tu carrito está vacío.");
+            return;
+        }
+        alert("¡Compra realizada con éxito!");
+        cart.length = 0;
+        cerrarCarrito();
+        updateCart();
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+    // Verificar si el usuario está autenticado y mostrar su nombre
+    fetch('http://172.16.0.139:3002/auth-status')
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {
+                document.getElementById("user-name").textContent = `Bienvenido, ${data.username}`;
+            } else {
+                document.getElementById("user-name").textContent = "No autenticado";
+                document.getElementById("logout-btn").style.display = "none";
+            }
+        })
+        .catch(error => {
+            console.error("Error al verificar autenticación:", error);
+        });
+
+    // Manejar el botón de cerrar sesión
+    document.getElementById("logout-btn").addEventListener("click", function () {
+        fetch('http://172.16.0.139:3002/logout', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Sesión cerrada correctamente.");
+                    window.location.href = "/menu";
+                }
+            })
+            .catch(error => {
+                console.error("Error al cerrar sesión:", error);
+            });
+    });
+});
+
+function logout() {
+    // Cerrar sesión en el servidor
+    fetch('http://172.16.0.139:3002/logout', { method: 'POST' })
+        .then(response => {
+            if (response.ok) {
+                alert("Sesión cerrada exitosamente.");
+                window.location.href = "/menu"; // Redirigir a la página de inicio de sesión
+            } else {
+                alert("Error al cerrar sesión. Intenta nuevamente.");
+            }
+        })
+        .catch(error => {
+            console.error("Error al cerrar sesión:", error);
+        });
+}
+function toggleMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-dLDk08fKQbGVOAuJZHw6Cy8EDjUpzbn0q8xIN5GxOXI3Q0U7UjGGL9B3qPNFL1G8" crossorigin="anonymous"></script>
+</body>
+</html>

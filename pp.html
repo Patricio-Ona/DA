@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante Delfín Azul</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/pages/styles.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Fondo semitransparente para cerrar el menú -->
+    <div class="overlay" onclick="toggleMenu()"></div>
+    
+    <!-- Ícono de menú hamburguesa -->
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+
+    <!-- Navegación -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/pages/Menu.html">Menú</a></li>
+            <li><a href="/pages/Nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="/pages/Contacto.html">Contacto</a></li>
+            <li><a href="/pages/login.html">Iniciar Sesión</a></li>
+        </ul>
+        <ul class="nav-links-mobile" id="mobileMenu">
+            <li><a href="/pages/Menu.html">Menú</a></li>
+            <li><a href="/pages/Nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="/pages/Contacto.html">Contacto</a></li>
+            <li><a href="/pages/login.html">Iniciar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <!-- Encabezado -->
+    <header>
+        <span>Restaurante</span>
+        <img src="/images/images.jpeg" alt="Delfín Azul Logo">
+        <span>Delfín Azul</span>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        <h2>Bienvenidos</h2>
+        <div>
+            <p>Disfruta de los mejores mariscos frescos en un ambiente familiar y acogedor. ¡Te esperamos con los brazos abiertos para que pruebes nuestros exquisitos platos!</p>
+        </div>
+    </main>
+
+    <!-- Script para menú hamburguesa -->
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("mobileMenu");
+            var overlay = document.querySelector(".overlay");
+            menu.classList.toggle("active");
+            overlay.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

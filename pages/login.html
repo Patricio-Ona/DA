@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Restaurante Delfín Azul</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7;
+}
+
+#login-form, #register-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    height: 80vh; /* Ajustar la altura */
+    overflow-y: auto; /* Agregar desplazamiento vertical */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>    
+</head>
+<body>
+    <div id="container">
+        <!-- Formulario de inicio de sesión -->
+        <div id="login-form">
+            <h2>Iniciar sesión</h2>
+            <input type="text" id="login-username" placeholder="Nombre de usuario" required>
+            <input type="password" id="login-password" placeholder="Contraseña" required>
+            <button onclick="login()">Iniciar sesión</button>
+            <br><br>
+            <button onclick="showRegisterForm()">¿No tienes cuenta? Regístrate</button>
+        </div>
+
+        <!-- Formulario de registro -->
+        <div id="register-form" style="display: none;">
+            <h2>Registrarse</h2>
+            <input type="text" id="register-username" placeholder="Nombre de usuario" required>
+            <input type="password" id="register-password" placeholder="Contraseña" required>
+            <input type="email" id="register-email" placeholder="Correo electrónico" required>
+            <input type="text" id="register-fullname" placeholder="Nombre completo">
+            <input type="text" id="register-address" placeholder="Dirección">
+            <input type="text" id="register-phone" placeholder="Teléfono">
+            <input type="date" id="register-birthday" placeholder="Fecha de nacimiento">
+            <input type="text" id="register-city" placeholder="Ciudad">
+            <input type="text" id="register-country" placeholder="País">
+            <input type="text" id="register-postalcode" placeholder="Código Postal">
+            <button onclick="register()">Registrarse</button>
+            <br><br>
+            <button onclick="showLoginForm()">Ya tengo cuenta</button>
+        </div>
+    </div>
+
+    <script>
+        function showRegisterForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+    
+        function showLoginForm() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        }
+    
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+    
+            if (!username || !password) {
+                alert("Por favor ingresa tu nombre de usuario y contraseña.");
+                return;
+            }
+    
+            fetch('http://172.16.0.139:3002/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Credenciales incorrectas.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('¡Bienvenido, ' + username + '!');
+                        localStorage.setItem("username", username); // Almacena el nombre de usuario
+                        window.location.href = '/menu'; // Redirigir al menú
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al iniciar sesión: Credenciales incorrectas.');
+                });
+        }
+    
+        function validateRegisterForm() {
+            const username = document.getElementById('register-username').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const birthday = document.getElementById('register-birthday').value.trim();
+    
+            // Validación del nombre
+            const nameRegex = /^[A-Za-z\s]+$/;
+            if (!nameRegex.test(username)) {
+                alert("El nombre solo debe contener letras y espacios.");
+                return false;
+            }
+    
+            // Validación del correo electrónico
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Por favor, ingresa un correo electrónico válido.");
+                return false;
+            }
+    
+            // Validación del teléfono
+            const phoneRegex = /^09\d{8}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("El teléfono debe empezar con 09 y tener 10 dígitos.");
+                return false;
+            }
+    
+            // Validación de la fecha de nacimiento
+            const birthDate = new Date(birthday);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            const dayDiff = today.getDate() - birthDate.getDate();
+    
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+    
+            if (age < 18) {
+                alert("Debes ser mayor de 18 años para registrarte.");
+                return false;
+            }
+    
+            return true;
+        }
+    
+        function register() {
+            if (!validateRegisterForm()) {
+                return; // No enviar si falla la validación
+            }
+    
+            const user = {
+                username: document.getElementById('register-username').value.trim(),
+                password: document.getElementById('register-password').value.trim(),
+                email: document.getElementById('register-email').value.trim(),
+                fullname: document.getElementById('register-fullname').value.trim(),
+                address: document.getElementById('register-address').value.trim(),
+                phone: document.getElementById('register-phone').value.trim(),
+                birthday: document.getElementById('register-birthday').value.trim(),
+                city: document.getElementById('register-city').value.trim(),
+                country: document.getElementById('register-country').value.trim(),
+                postalcode: document.getElementById('register-postalcode').value.trim()
+            };
+    
+            fetch('http://172.16.0.139:3002/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Usuario registrado correctamente.");
+                        clearRegisterFields(); // Limpia solo después de registrar exitosamente
+                        showLoginForm();
+                    } else {
+                        alert("Error al registrar el usuario: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Hubo un problema al intentar registrar el usuario.");
+                });
+        }
+    
+        function clearRegisterFields() {
+            const fields = ['register-username', 'register-password', 'register-email', 'register-fullname', 'register-address', 'register-phone', 'register-birthday', 'register-city', 'register-country', 'register-postalcode'];
+            fields.forEach(field => {
+                localStorage.removeItem(field); // Borra del localStorage
+                document.getElementById(field).value = ''; // Limpia el campo
+            });
+        }
+    
+        function saveRegisterFields() {
+            const fields = ['register-username', 'register-password', 'register-email', 'register-fullname', 'register-address', 'register-phone', 'register-birthday', 'register-city', 'register-country', 'register-postalcode'];
+            fields.forEach(field => {
+                const value = document.getElementById(field).value.trim();
+                localStorage.setItem(field, value);
+            });
+        }
+    
+        function loadRegisterFields() {
+            const fields = ['register-username', 'register-password', 'register-email', 'register-fullname', 'register-address', 'register-phone', 'register-birthday', 'register-city', 'register-country', 'register-postalcode'];
+            fields.forEach(field => {
+                const value = localStorage.getItem(field) || '';
+                document.getElementById(field).value = value;
+            });
+        }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            loadRegisterFields(); // Cargar datos al cargar la página
+            const fields = ['register-username', 'register-password', 'register-email', 'register-fullname', 'register-address', 'register-phone', 'register-birthday', 'register-city', 'register-country', 'register-postalcode'];
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                if (input) {
+                    input.addEventListener('input', saveRegisterFields);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
